@@ -25,15 +25,20 @@ public class AddTwoNumbers {
 
         ListNode l2 = new ListNode(5);
         l2.next = new ListNode(6);
-        l2.next.next = new ListNode(4);
+        l2.next.next = new ListNode(6);
+        //l2.next.next.next = new ListNode(9);
 
         ListNode result = addTwoNumbers(l1, l2);
+        while (result != null) {
+            System.out.print(result.val + " ");
+            result = result.next;
+        }
     }
 
     public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode head = l1;
         int num = 0;
-        while (l1 != null && l2 != null) {
+        while (l1.next != null && l2.next != null) {
             int sum = num + l1.val + l2.val;
             num = sum / 10;
             l1.val = sum % 10;
@@ -41,22 +46,29 @@ public class AddTwoNumbers {
             l2 = l2.next;
         }
 
-        if (l2 != null) {
-            l1 = l2;
+
+        l1.val = num + l1.val + l2.val;
+        num = l1.val / 10;
+        l1.val %= 10;
+        if (l2.next != null) {
+            l1.next = l2.next;
         }
 
         if (num != 0) {
-            if (l1 == null) {
-                l1 = new ListNode(num);
+            if (l1.next == null) {
+                l1.next = new ListNode(num);
+                l1.next.next = null;
             } else {
-                while (l1 != null) {
-                    l1.val += num;
-                    num = l1.val /10;
-                    l1.val %=10;
+                while (l1.next != null) {
+                    l1.next.val += num;
+                    num = l1.next.val / 10;
+                    l1.next.val %= 10;
+                    l1 = l1.next;
                 }
 
-                if (num !=0) {
-                    l1 = new ListNode(num);
+                if (num != 0) {
+                    l1.next = new ListNode(num);
+                    l1.next.next = null;
                 }
             }
         }
