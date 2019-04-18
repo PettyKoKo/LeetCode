@@ -25,8 +25,8 @@ public class MedianOfTwoSortedArrays {
 
     public static void main(String[] args) {
 
-        int[] a = new int[]{1,2};
-        int[] b = new int[]{3,4};
+        int[] a = new int[]{};
+        int[] b = new int[]{2};
 
         System.out.println(findMedianSortedArrays(a,b));
 
@@ -38,46 +38,43 @@ public class MedianOfTwoSortedArrays {
         int n1 = nums1.length;
         int n2 = nums2.length;
 
+
         int media = (n1 + n2) / 2;
-        int[] num = new int[n1 ];
+        int[] num = new int[n1 + n2 + 1];
 
         int i = 0, j = 0;
         int count = 0;
+
+        // 先相继比较nums1和nums2中的数，按小大顺序插入num中
         while (i < n1 && j < n2) {
             if (nums1[i] < nums2[j]) {
-                num[count++] = nums1[i];
-                i++;
+                num[count++] = nums1[i++];
             } else {
-                num[count++] = nums2[j];
-                j++;
+                num[count++] = nums2[j++];
             }
         }
 
-        if (count > media) {
-            if (media % 2 == 0) {
-                return (num[media - 1] + num[media]) / 2.0;
-            } else {
-                return 1.0 * num[media];
-            }
-        }
 
-        // 说明num1遍历完了
+        // 如果num1遍历完了
         if (i == n1) {
-            if (media % 2 == 0) {
-                return (nums2[j + media - count-1] + nums2[j + media - count]) /2.0;
-            } else {
-                return 1.0 * nums2[j + media - count];
+            while ( j < n2) {
+                num[count++] = nums2[j++];
             }
         }
 
+        // 如果num2遍历完了
         if (j == n2) {
-            if (media % 2 == 0) {
-                return (nums1[i + media - count-1] + nums1[i+ media - count]) /2.0;
-            } else {
-                return 1.0 * nums1[i + media - count];
+            while ( i < n1) {
+                num[count++] = nums1[i++];
             }
         }
 
-        return 0.0;
+        // 如果两个数组长度和为偶数
+        if ((n1 + n2) % 2 == 0) {
+            return (num[media-1] + num[media]) / 2.0;
+        } else {
+            return 1.0 * num[media];
+        }
+
     }
 }
